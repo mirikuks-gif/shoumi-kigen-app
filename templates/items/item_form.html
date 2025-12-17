@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#2196f3">
+    <title>食材の新規登録</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+</head>
+<body>
+    <main class="page">
+        <h1>食材の新規登録</h1>
+
+        <form method="post" action="{% url 'item_add' %}">
+            {% csrf_token %} 
+
+            <p>
+                <label for="{{ form.name.id_for_label }}">食材名:</label>
+                {{ form.name }}
+                {{ form.name.errors }}
+            </p>
+
+            <p>
+                <label for="{{ form.category.id_for_label }}">食材カテゴリ:</label>
+                {{ form.category }}
+                {{ form.category.errors }}
+            </p>
+
+            <p>
+                <label for="{{ form.location.id_for_label }}">保存場所:</label>
+                {{ form.location }}
+                {{ form.location.errors }}
+            </p>
+
+            <p id="other-location-p" style="display:none;">
+                <label for="{{ form.other_location.id_for_label }}">{{ form.other_location.label }}:</label>
+                {{ form.other_location }}
+                {{ form.other_location.errors }}
+            </p>
+
+            <p>
+                <label for="{{ form.expiry_date.id_for_label }}">賞味期限:</label>
+                {{ form.expiry_date }}
+                {{ form.expiry_date.errors }}
+            </p>
+
+            <p>
+                <label for="{{ form.quantity.id_for_label }}">数量:</label>
+                {{ form.quantity }}
+                {{ form.quantity.errors }}
+            </p>
+
+            <p>
+                <label for="{{ form.price.id_for_label }}">金額 (任意):</label>
+                {{ form.price }}
+                {{ form.price.errors }}
+            </p>
+
+            <p>
+                <label for="{{ form.store_name.id_for_label }}">購入店舗 (任意):</label>
+                {{ form.store_name }}
+                {{ form.store_name.errors }}
+            </p>
+
+            <button type="submit">登録</button>
+        </form>
+
+        <p><a href="{% url 'home' %}">ホームに戻る</a></p>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const locationSelect = document.getElementById('{{ form.location.auto_id|default:"id_location" }}') || document.getElementById('id_location');
+            const otherLocationField = document.getElementById('other-location-p');
+            const OTHER_OPTION_VALUE = '8'; // 「その他」の値に合わせて変更
+
+            function toggleOtherLocationField() {
+                if (!locationSelect) return;
+                if (locationSelect.value === OTHER_OPTION_VALUE) {
+                    otherLocationField.style.display = 'block';
+                } else {
+                    otherLocationField.style.display = 'none';
+                }
+            }
+
+            toggleOtherLocationField();
+            if (locationSelect) {
+                locationSelect.addEventListener('change', toggleOtherLocationField);
+            }
+        });
+    </script>
+</body>
+</html>

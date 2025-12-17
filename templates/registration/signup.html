@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>ユーザー登録</title>
+</head>
+<body>
+    <h1>ユーザー登録</h1>
+
+    <form method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+        
+        {{ form.non_field_errors }}
+        
+        <p>
+            <label for="{{ form.username.id_for_label }}">ユーザー名:</label><br>
+            {{ form.username }}
+            {{ form.username.errors }}
+        </p>
+        
+        <p>
+            <label for="{{ form.password1.id_for_label }}">パスワード:</label><br>
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+        </p>
+        
+        <p>
+            <label for="{{ form.password2.id_for_label }}">パスワード確認:</label><br>
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+        </p>
+
+        <button type="submit">登録</button>
+    </form>
+
+    <p><a href="{% url 'login' %}">ログインはこちら</a></p>
+</body>
+</html>

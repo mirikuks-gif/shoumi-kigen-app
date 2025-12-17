@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#2196f3">
+    <title>レシピ検索</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/recipes.css' %}">
+</head>
+<body>
+    <h1>消費提案の献立 🍳</h1>
+    <p>
+        <a href="{% url 'item_list' %}">食材一覧に戻る</a>
+    </p>
+    <hr>
+
+    <!-- 手動レシピ検索フォーム -->
+    <section class="manual-search">
+        <h2>手動レシピ検索</h2>
+        <form method="get" action="{% url 'manual_recipe_search' %}">
+            <label for="ingredients">
+                食材を入力してください（例：鶏むね肉, 玉ねぎ, 卵）:
+            </label><br>
+            <input type="text" id="ingredients" name="ingredients" size="60"
+                   value="{{ keyword|default:'' }}"
+                   placeholder="カンマ区切りで入力" required>
+            <button type="submit">レシピ検索</button>
+        </form>
+    </section>
+
+    <!-- 在庫食材一覧 -->
+    <section class="stock-section">
+        <h2>現在の在庫食材</h2>
+        <div class="stock-container">
+            {% if item_list %}
+                <ul class="stock-list">
+                    {% for item in item_list %}
+                        <li>
+                            {{ item.name }} ({{ item.quantity }}個, {{ item.location.name }})
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>在庫食材はまだ登録されていません。</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <hr>
+
+    <!-- 検索結果 -->
+    <section class="search-results">
+        {% if recipes %}
+            <h2>検索結果 ({{ keyword }} を利用)</h2>
+            <div class="recipe-container">
+                {% for recipe in recipes %}
+                    <div class="recipe-card">
+                        <h4>
+                            <a href="{{ recipe.url }}" target="_blank">{{ recipe.title }}</a>
+                        </h4>
+                        {% if recipe.image_url %}
+                            <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% if keyword %}
+                <p>「{{ keyword }}」に一致するレシピは見つかりませんでした。</p>
+            {% endif %}
+        {% endif %}
+    </section>
+</body>
+</html>

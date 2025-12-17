@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#2196f3">
+    <title>🚀 クイック追加リスト</title>
+</head>
+<body>
+    <h1>🚀 クイック追加リスト</h1>
+    <p><a href="{% url 'home' %}">ホームに戻る</a></p>
+
+    {% if fixed_ingredients %}
+        <p>クイック追加したい食材を選んでください。</p>
+        
+        <ul style="list-style: none; padding: 0;">
+            {% for item in fixed_ingredients %}
+                <li style="margin-bottom: 10px; border: 1px solid #ddd; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
+                    <span style="font-weight: bold;">{{ item.name }}</span>
+                    <span style="font-size: 0.9em; color: #666;">（{{ item.category.name|default:"カテゴリ不明" }}）</span>
+
+                    <a href="{% url 'item_add' %}?name={{ item.name }}&category={{ item.category.pk|default:'' }}" 
+                        style="float: right; padding: 5px 10px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 3px;">
+                    ＋ 登録へ
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>クイック追加対象の食材は設定されていません。</p>
+    {% endif %}
+
+</body>
+</html>

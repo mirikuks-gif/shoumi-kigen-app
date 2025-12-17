@@ -1,0 +1,151 @@
+/* ドキュメント全体：高さを固定しない＋縦スクロール許可 */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;                /* 画面を最低限カバーしつつ、内容に応じて伸びる */
+    overflow-x: hidden;               /* 横スクロールは基本抑制 */
+    overflow-y: auto;                 /* 縦スクロール許可 */
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+}
+
+/* 全体 */
+body {
+    font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif;
+    background: #f9f9fb;
+    margin: 0;
+    padding: 30px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+/* フォーム全体をカード風に */
+form {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    box-sizing: border-box;
+}
+
+/* ラベルと入力欄 */
+form p {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #444;
+}
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: box-shadow 0.3s, border-color 0.3s;
+    box-sizing: border-box;
+}
+input:focus, select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0,123,255,0.4);
+}
+
+/* ボタン */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background: #ff6f61;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    box-sizing: border-box;
+}
+button:hover {
+    background: #e85c50;
+    transform: translateY(-2px);
+}
+
+/* 戻るリンク（ボタン風に変更） */
+p a {
+    display: inline-block;
+    padding: 10px 16px;
+    border: 1px solid #007bff;
+    border-radius: 6px;
+    background: #f9f9fb;
+    color: #007bff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    max-width: 100%;       /* はみ出し防止 */
+    box-sizing: border-box;
+}
+p a:hover {
+    background: #e3f2fd;
+}
+
+/* スマホ向け調整 */
+@media (max-width: 600px) {
+    body {
+        padding: 16px;                 /* 余白を減らして切れ防止 */
+        overflow-y: auto !important;   /* 念のため強制許可 */
+    }
+
+    form {
+        max-width: 100%;               /* フォームを画面幅に合わせる */
+        margin: 0 0 20px;              /* 中央寄せを解除して左右余白に収める */
+    }
+
+    /* 横スクロールが必要な場合に備えたラッパ */
+    .form-scroll {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+
+    /* 入力が長くてもレイアウト崩れないように */
+    input[type="text"] {
+        word-break: break-word;
+    }
+
+    h1 {
+        font-size: 1.6em;
+        margin-bottom: 18px;
+    }
+
+    button {
+        padding: 16px;       /* 指で押しやすいサイズに */
+        font-size: 1.2em;
+    }
+
+    p a {
+        display: block;      /* 横幅いっぱいに広げる */
+        width: 100%;         /* 画面幅に合わせる */
+        padding: 14px;
+        font-size: 1.1em;
+        margin: 0 auto;      /* 中央寄せ */
+    }
+}

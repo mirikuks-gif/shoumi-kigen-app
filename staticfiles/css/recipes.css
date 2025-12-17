@@ -1,0 +1,117 @@
+/* 全体 */
+body {
+    font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif;
+    background: linear-gradient(135deg, #fdfbfb, #ebedee); /* 柔らかいグラデーション */
+    margin: 0;
+    padding: 30px;
+    color: #444;
+    line-height: 1.6;
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #007bff;
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    position: relative;
+}
+h1::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #ff6f61;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* サブ見出し */
+h2 {
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+/* 戻るリンク */
+p a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+p a:hover {
+    text-decoration: underline;
+}
+
+/* 検索フォーム */
+form {
+    text-align: center;
+    margin-bottom: 30px;
+}
+input[type="text"] {
+    padding: 10px 15px;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 1em;
+    transition: box-shadow 0.3s;
+}
+input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(255, 111, 97, 0.5);
+}
+button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 25px;
+    background: #ff6f61;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+button:hover {
+    background: #e85c50;
+}
+
+/* レシピカードコンテナ */
+.recipe-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+/* レシピカード */
+.recipe-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 280px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+.recipe-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+}
+.recipe-card h4 {
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #2c3e50;
+}
+.recipe-card a {
+    text-decoration: none;
+    color: #ff6f61;
+    font-weight: bold;
+}
+.recipe-card a:hover {
+    text-decoration: underline;
+}
+.recipe-card img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}

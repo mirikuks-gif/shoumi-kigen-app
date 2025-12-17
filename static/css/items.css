@@ -1,0 +1,116 @@
+/* 全体 */
+body {
+    font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif;
+    background: #f9f9fb;
+    margin: 0;
+    padding: 30px;
+    color: #333;
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+/* 共通ボタンスタイル */
+.btn-link, .btn-main, .btn-sub {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    margin: 4px;
+    font-size: 0.95em;
+    padding: 10px 16px;
+}
+
+/* メイン機能用ボタン */
+.btn-main {
+    background: #2196f3;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin: 5px;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background 0.2s, transform 0.2s;
+}
+.btn-main:hover {
+    background: #1976d2;
+    transform: translateY(-3px);
+}
+
+/* サブ機能用ボタン */
+.btn-sub {
+    background: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+.btn-sub:hover {
+    background: #e0e0e0;
+}
+
+/* テーブル */
+.table-list {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.table-list th, .table-list td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    white-space: nowrap;
+}
+.table-list th {
+    background: #f0f4f8;
+    font-weight: bold;
+}
+.table-list tr:nth-child(even) {
+    background: #fafafa;
+}
+
+/* 賞味期限色分け */
+.expired { background-color: #fca5a5; font-weight: bold; }
+.urgent { background-color: #fde68a; }
+.soon { background-color: #fef08a; }
+.expiry-note {
+    font-size: 0.8em;
+    display: block;
+    color: #555;
+}
+
+/* フォーム */
+.filter-form { margin-bottom: 20px; }
+.bulk-actions { margin-bottom: 10px; }
+.inline-form { display: inline-block; margin: 0 5px; }
+
+/* スマホ用調整 */
+@media (max-width: 600px) {
+    .table-list {
+        transform: scale(0.85);   /* テーブル全体を縮小 */
+        transform-origin: top left;
+    }
+
+    .table-list th, .table-list td {
+        font-size: 0.7em;   /* 文字を小さく */
+        padding: 4px;       /* 余白を減らす */
+        white-space: normal; /* 折り返し許可 */
+    }
+
+    h1 {
+        font-size: 1.4em;   /* 見出しも少し小さく */
+    }
+
+    .btn-link, .btn-main, .btn-sub {
+        font-size: 0.8em;
+        padding: 6px 10px;
+    }
+}

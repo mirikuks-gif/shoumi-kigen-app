@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#2196f3">
+    <title>食材使用履歴</title>
+    <style>
+        .history-day {
+            margin-top: 25px;
+            padding: 10px;
+            background-color: #e0f2fe; /* 日付の背景色 */
+            border-bottom: 2px solid #93c5fd;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        .item-name {
+            font-weight: bold;
+            flex: 2; /* 幅を広げる */
+        }
+        .item-detail {
+            flex: 1;
+            text-align: right;
+            margin-left: 10px;
+        }
+        .used-quantity {
+            color: #ef4444; /* 使用数量を赤く */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>食材使用履歴</h1>
+    <h2>📊 支出サマリー</h2>
+
+    <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+        
+        <div style="flex: 1; border: 1px solid #ccc; padding: 15px; border-radius: 5px;">
+            <h2>💰 月別合計支出</h2>
+            {% if monthly_spend %}
+                <table border="1" style="border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr>
+                            <th>年月</th>
+                            <th>合計支出額</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in monthly_spend %}
+                        <tr>
+                            <td>{{ item.month|date:"Y年m月" }}</td>
+                            <td>{{ item.total_price|floatformat:0 }} 円</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>月別支出の履歴はありません。</p>
+            {% endif %}
+        </div> <div style="flex: 1; border: 1px solid #ccc; padding: 15px; border-radius: 5px;">
+            <h3>カテゴリ別支出合計</h3>
+            {% if category_spend %}
+                {% for item in category_spend %}
+                    <p style="margin: 5px 0;">
+                        <b>{{ item.category_name|default:"不明" }}</b>: 
+                        {% if item.total_price %}{{ item.total_price|floatformat:"0" }}円{% else %}0円{% endif %}
+                    </p>
+                {% endfor %}
+            {% else %}
+                <p>カテゴリ別支出データがありません。</p>
+            {% endif %}
+        </div> </div> <hr>
+    <p><a href="{% url 'home' %}">ホームに戻る</a></p>
+    
+    {% if history_list %}
+        {% with current_day="" %}
+        {% for history in history_list %}
+            {% comment %} 日付が変わったら新しいヘッダーを表示 {% endcomment %}
+            {% if history.used_at|date:"Y年m月d日" != current_day %}
+                <div class="history-day">
+                    {{ history.used_at|date:"Y年m月d日" }}
+                </div>
+                {% with history.used_at|date:"Y年m月d日" as current_day %}
+                {% endwith %}
+            {% endif %}
+
+            <div class="history-item">
+                <div class="item-name">
+                    {{ history.item_name }}
+                    <span style="font-size: 0.8em; color: #666;">
+                        （{{ history.category_name|default:"カテゴリ不明" }}）
+                    </span>
+                </div>
+                <div class="item-detail">
+    <span class="used-quantity">- {{ history.quantity_used }} 個</span>
+    
+    <span style="font-size: 0.8em; color: #333; display: block;"> 
+        {% if history.price_at_usage %}{{ history.price_at_usage }}円{% endif %}
+        ({{ history.store_name_at_usage|default:"店舗不明" }})
+    </span>
+    <span style="font-size: 0.8em; color: #999;">
+        ({{ history.used_at|date:"H:i" }} 使用)
+    </span>
+</div>
+            </div>
+        {% endfor %}
+        {% endwith %}
+    {% else %}
+    <p>まだ使用履歴はありません。</p>
+    {% endif %}
+
+</body>
+</html>

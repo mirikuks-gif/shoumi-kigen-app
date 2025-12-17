@@ -1,0 +1,84 @@
+/* 全体 */
+body {
+    font-family: 'Segoe UI', 'Hiragino Sans', Arial, sans-serif;
+    background: #f9f9fb;
+    margin: 0;
+    padding: 30px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 見出し */
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+/* フォーム全体をカード風に */
+form {
+    max-width: 600px;
+    margin: 0 auto 30px;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+/* ラベルと入力欄 */
+form p {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #444;
+}
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+input:focus, select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0,123,255,0.4);
+}
+
+/* ボタン */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background: #ff6f61;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+button:hover {
+    background: #e85c50;
+    transform: translateY(-2px);
+}
+
+/* 戻るリンク */
+p a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+p a:hover {
+    text-decoration: underline;
+}

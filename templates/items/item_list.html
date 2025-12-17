@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#2196f3">
+    <title>食材一覧</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/items.css' %}">
+</head>
+<body>
+    <h1>食材一覧</h1>
+
+    <!-- ナビゲーションリンク -->
+    <nav class="nav-links">
+        <a href="{% url 'item_add' %}" class="btn btn-main">📝 新しい食材を登録</a>
+        <a href="{% url 'manual_recipe_search' %}" class="btn btn-main">🍲 手動レシピ検索</a>
+        <a href="{% url 'item_quick_add_list' %}" class="btn btn-sub">🚀 クイック追加リスト</a>
+        <a href="{% url 'home' %}" class="btn btn-sub">🏠 ホームに戻る</a>
+    </nav>
+
+    <!-- フィルタフォーム -->
+    <form method="get" class="filter-form">
+        <label for="category_select">カテゴリで絞り込む:</label>
+        <select name="category" id="category_select">
+            <option value="">全てのカテゴリ</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-main">🔍 絞り込み</button>
+    </form>
+    
+    <hr>
+    {% if item_list %}
+    <form method="post" action="{% url 'item_bulk_operation' %}"> 
+        {% csrf_token %}
+
+        <!-- 一括操作ボタン -->
+        <div class="bulk-actions">
+            <button type="submit" name="action" value="delete" class="btn btn-red">🗑️ 一括削除</button>
+            <button type="submit" name="action" value="use" class="btn btn-green">✅ 一括使用</button>
+        </div>
+
+        <!-- 食材一覧テーブル -->
+        <table class="table-list">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="select_all"></th> 
+                    <th>食材名</th>
+                    <th>数量</th>
+                    <th>保存場所</th>
+                    <th>賞味期限</th>
+                    <th>カテゴリ</th>
+                    <th>金額</th>
+                    <th>購入店舗</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in item_list %}
+                <tr>
+                    <td><input type="checkbox" name="selected_items" value="{{ item.pk }}"></td> 
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.location.name }}</td>
+                    <td class="{% if item.remaining_days is not None %}
+                                {% if item.remaining_days <= 0 %}expired
+                                {% elif item.remaining_days <= 3 %}urgent
+                                {% elif item.remaining_days <= 7 %}soon
+                                {% endif %}
+                              {% endif %}">
+                        {{ item.expiry_date|date:"Y/m/d" }}
+                        {% if item.remaining_days is not None %}
+                            <span class="expiry-note">
+                            {% if item.remaining_days < 0 %}
+                                (期限切れ: {{ item.expired_days }}日前)
+                            {% else %}
+                                (残り {{ item.remaining_days }} 日)
+                            {% endif %}
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>{{ item.category.name|default:"-" }}</td>
+                    <td>{% if item.price %}{{ item.price }}円{% else %}-{% endif %}</td>
+                    <td>{{ item.store_name|default:"-" }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <!-- 上段：使用・使い切り -->
+                            <form method="post" action="{% url 'item_quantity_update' pk=item.pk %}" class="inline-form">
+                                {% csrf_token %}
+                                <select name="used_amount">
+                                    {% for _ in ""|ljust:item.quantity %}
+                                        <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-green">使用</button>
+                            </form>
+
+                            <form method="post" action="{% url 'item_quantity_update' pk=item.pk %}" class="inline-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="full_use"> 
+                                <button type="submit" class="btn btn-red">使い切り</button>
+                            </form>
+
+                            <!-- 下段：編集・削除 -->
+                            <a href="{% url 'item_edit' pk=item.pk %}" class="btn btn-sub">✏️ 編集</a>
+                            <a href="{% url 'item_delete' pk=item.pk %}" class="btn btn-sub">🗑️ 削除</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <script>
+        document.getElementById('select_all').onclick = function(e) {
+            var checkboxes = document.getElementsByName('selected_items');
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = e.target.checked;
+            }
+        };
+    </script>
+    {% else %}
+    <p>まだ登録されている食材はありません。</p>
+    {% endif %}
+</body>
+</html>

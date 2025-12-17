@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>賞味期限管理アプリ - ホーム</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2196f3">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <main class="page">
+        <h1>ホーム</h1>
+
+        {% if request.user.is_authenticated %}
+            <p class="welcome">ようこそ、{{ request.user.username }} さん</p>
+
+            <!-- ナビゲーションリンク -->
+            <nav class="nav-links">
+                <a href="{% url 'item_add' %}" class="btn-main">📝 食材の新規登録</a>
+                <a href="{% url 'item_list' %}" class="btn-main">🍲 レシピ検索・在庫一覧</a>
+                <a href="{% url 'item_quick_add_list' %}" class="btn-sub">🚀 クイック追加</a>
+                <a href="{% url 'usage_history' %}" class="btn-sub">🕒 使用履歴</a>
+            </nav>
+
+            <h2>期限が一週間以内の食材</h2>
+            <hr>
+            {% if item_list %}
+            <table class="table-list">
+                <thead>
+                    <tr>
+                        <th>食材名</th>
+                        <th>保存場所</th>
+                        <th>賞味期限</th>
+                        <th>数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in item_list %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.location.name }}</td>
+                        <td>{{ item.expiry_date|date:"Y/m/d" }}</td>
+                        <td>{{ item.quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="no-items">この一週間で期限切れになる食材はありません。安心ですね！</p>
+            {% endif %}
+
+            <hr>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">ログアウト</button>
+            </form>
+        {% else %}
+            <p>サービスを利用するにはログインが必要です。</p>
+            <nav class="nav-links">
+                <a href="{% url 'login' %}" class="btn-link">🔑 ログイン</a>
+                <a href="{% url 'signup' %}" class="btn-link">📝 ユーザー登録</a>
+            </nav>
+        {% endif %}
+
+        <footer>
+            <p>&copy; 2024 賞味期限管理アプリ</p>
+        </footer>
+    </main>
+    <script>
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/static/service-worker.js", { scope: '/static/' })
+        .then(reg => console.log("Service Worker registered:", reg))
+        .catch(err => console.log("Service Worker registration failed:", err));
+    }
+    </script>
+</body>
+</html>
