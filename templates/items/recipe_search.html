@@ -7,7 +7,6 @@
     <link rel="manifest" href="{% static 'manifest.json' %}">
     <meta name="theme-color" content="#2196f3">
     <title>レシピ検索</title>
-    {% load static %}
     <link rel="stylesheet" href="{% static 'css/recipes.css' %}">
 </head>
 <body>
@@ -73,32 +72,14 @@
             {% endif %}
         {% endif %}
     </section>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="{% static 'manifest.json' %}">
-    <meta name="theme-color" content="#2196f3">
-    <title>Document</title>
-</head>
-<body>
-    <h1>食材の削除確認</h1>
-    <p>本当に「**{{ ingredient.name }}**」（賞味期限：{{ ingredient.expiry_date }}）を削除しますか？</p>
-    <form method="post" action="">
-        {% csrf_token %}
-        <button type="submit">削除</button>
-        <a href="{% url 'item_list' %}">キャンセル</a>
-    </form>
+
+    <!-- Service Worker 登録 -->
     <script>
         if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
-            .then(reg => console.log('Service Worker registered', reg))
-            .catch(err => console.log('Service Worker registration failed', err));
+            navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
+                .then(reg => console.log('Service Worker registered', reg))
+                .catch(err => console.log('Service Worker registration failed', err));
         }
     </script>
-</body>
-</html>
 </body>
 </html>
