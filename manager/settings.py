@@ -5,10 +5,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-enve^#qsx7+nlspo&7m-(yqwn3894b_xo63$029mf+*t5whu2i'
 
-# 本番環境では必ず False
-DEBUG = False
+DEBUG = False  # 本番では必ず False
 
-# Render のドメインを許可
 ALLOWED_HOSTS = [
     'shoumi-kigen-app.onrender.com',
     'localhost',
@@ -27,7 +25,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # ← Whitenoise を先頭に追加
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # Whitenoise を必ず入れる
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,10 +73,12 @@ TIME_ZONE = 'Asia/Tokyo'
 USE_I18N = True
 USE_TZ = True
 
-# 静的ファイル設定（本番用）
+# 静的ファイル設定
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATICFILES_DIRS は削除済み
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
