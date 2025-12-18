@@ -3,36 +3,81 @@
 <head>
     <meta charset="utf-8">
     <title>ユーザー登録</title>
+    <!-- スマホ対応のための viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 400px; /* PCでは広がりすぎないよう制限 */
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 1.5em;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            font-size: 16px; /* スマホで押しやすいサイズ */
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    <h1>ユーザー登録</h1>
+    <div class="form-container">
+        <h1>ユーザー登録</h1>
 
-    <form method="post" action="{% url 'signup' %}">
-        {% csrf_token %}
-        
-        {{ form.non_field_errors }}
-        
-        <p>
-            <label for="{{ form.username.id_for_label }}">ユーザー名:</label><br>
-            {{ form.username }}
-            {{ form.username.errors }}
-        </p>
-        
-        <p>
-            <label for="{{ form.password1.id_for_label }}">パスワード:</label><br>
-            {{ form.password1 }}
-            {{ form.password1.errors }}
-        </p>
-        
-        <p>
-            <label for="{{ form.password2.id_for_label }}">パスワード確認:</label><br>
-            {{ form.password2 }}
-            {{ form.password2.errors }}
-        </p>
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            
+            {{ form.non_field_errors }}
+            
+            <p>
+                <label for="{{ form.username.id_for_label }}">ユーザー名:</label><br>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </p>
+            
+            <p>
+                <label for="{{ form.password1.id_for_label }}">パスワード:</label><br>
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </p>
+            
+            <p>
+                <label for="{{ form.password2.id_for_label }}">パスワード確認:</label><br>
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </p>
 
-        <button type="submit">登録</button>
-    </form>
+            <button type="submit">登録</button>
+        </form>
 
-    <p><a href="{% url 'login' %}">ログインはこちら</a></p>
+        <p><a href="{% url 'login' %}">ログインはこちら</a></p>
+    </div>
 </body>
 </html>
