@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -69,5 +70,12 @@
 
         <p>アカウントをお持ちでない方は <a href="{% url 'signup' %}">ユーザー登録</a> へ</p>
     </div>
+    <script>
+        if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
+            .then(reg => console.log('Service Worker registered', reg))
+            .catch(err => console.log('Service Worker registration failed', err));
+        }
+    </script>
 </body>
 </html>

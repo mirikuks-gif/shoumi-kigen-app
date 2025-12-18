@@ -125,9 +125,18 @@
                 checkboxes[i].checked = e.target.checked;
             }
         };
+
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("{% static 'js/service-worker.js' %}")
+                .then(reg => console.log('Service Worker registered', reg))
+                .catch(err => console.log('Service Worker registration failed', err));
+        }
     </script>
     {% else %}
     <p>まだ登録されている食材はありません。</p>
     {% endif %}
+    
 </body>
 </html>
