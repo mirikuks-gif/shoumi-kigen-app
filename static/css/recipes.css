@@ -115,3 +115,7 @@ button:hover {
     border-radius: 8px;
     margin-bottom: 15px;
 }
+.expired { color: #d00000; }   /* 赤 */
+.danger  { color: #ff8c00; }   /* オレンジ */
+.warning { color: #228b22; }   /* 緑（フォレストグリーン） */
+.safe    { color: #333333; }

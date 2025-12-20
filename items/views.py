@@ -428,6 +428,7 @@ class RecipeSearchView(ListView):
         if not ingredient_names:
             print("DEBUG: 在庫ゼロのためAPI呼び出しをスキップ")
             return []
+        
 class ManualRecipeSearchView(View):
     def get(self, request):
         keyword = request.GET.get("ingredients", "").strip()
@@ -442,10 +443,22 @@ class ManualRecipeSearchView(View):
 
         # 在庫食材を取得（ユーザーに紐づけるなら filter(user=request.user)）
         item_list = Ingredient.objects.filter(user=request.user)
+        auto_query = item_list[0].name if item_list else ""
 
         context = {
             "keyword": keyword,
             "recipes": recipes,
             "item_list": item_list,
+            "auto_query": auto_query,
         }
         return render(request, "items/recipe_search.html", context)
+    
+def recipe_search(request):
+    ingredients = Ingredient.objects.filter(user=request.user)
+
+    # 在庫の食材名をスペース区切りでまとめる
+    auto_query = " ".join([i.name for i in ingredients])
+
+    return render(request, "recipe_search.html", {
+        "auto_query": auto_query,
+    })

@@ -1,0 +1,1 @@
+$env:PATH += ";C:\Users\0910pyweb\.fly\bin"

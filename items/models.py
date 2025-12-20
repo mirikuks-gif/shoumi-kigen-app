@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from datetime import date
 
 # --- 1. 保存場所マスタテーブル (Location) ---
 class Location(models.Model):
@@ -98,6 +99,21 @@ class Ingredient(models.Model):
         auto_now_add=True,
         verbose_name="登録日時"
     )
+    @property
+    def days_left(self):
+        """期限までの残り日数"""
+        return (self.expiry_date - date.today()).days
+
+    @property
+    def status_class(self):
+        """色分け用のCSSクラス"""
+        if self.days_left < 0:
+            return "expired"      # 赤
+        elif self.days_left <= 3:
+            return "danger"       # オレンジ
+        elif self.days_left <= 7:
+            return "warning"      # 黄色
+        return "safe"             # 通常
 
     class Meta:
         # 賞味期限が近い順に並べる

@@ -28,7 +28,52 @@
                 placeholder="カンマ区切りで入力" required>
             <button type="submit">レシピ検索</button>
         </form>
+<hr>
+
+
+<h2>在庫から検索</h2>
+<form method="get" action="https://www.kurashiru.com/search" target="_blank">
+    <label for="auto_ingredients">
+        在庫の食材を自動入力しています（編集もできます）:
+    </label><br>
+    <input type="text" id="auto_ingredients" name="query" size="60"
+        value="{{ auto_query }}"
+        placeholder="在庫の食材が自動で入ります">
+    <button type="submit">在庫で検索</button>
+</form>
     </section>
+<hr>
+<br>
+
+<!-- 折りたたみボタン -->
+<button class="toggle-btn" onclick="toggleQuickSearch()">▼ クイック検索（タップで開く）</button>
+
+<!-- 折りたたみ内容 -->
+<div id="quick-search-box" style="display:none; margin-top:10px;">
+    {% for item in item_list %}
+        <form method="get" action="https://www.kurashiru.com/search" target="_blank" style="display:inline;">
+            <input type="hidden" name="query" value="{{ item.name }}">
+            <button type="submit" class="quick-btn">
+                {{ item.name }}で検索
+            </button>
+        </form>
+    {% endfor %}
+</div>
+
+<script>
+function toggleQuickSearch() {
+    const box = document.getElementById("quick-search-box");
+    const btn = document.querySelector(".toggle-btn");
+
+    if (box.style.display === "none") {
+        box.style.display = "block";
+        btn.textContent = "▲ クイック検索（タップで閉じる）";
+    } else {
+        box.style.display = "none";
+        btn.textContent = "▼ クイック検索（タップで開く）";
+    }
+}
+</script>
 
     <!-- 在庫食材一覧 -->
     <section class="stock-section">
@@ -37,9 +82,12 @@
             {% if item_list %}
                 <ul class="stock-list">
                     {% for item in item_list %}
-                        <li>
-                            {{ item.name }} ({{ item.quantity }}個, {{ item.location.name }})
-                        </li>
+                    <li class="{{ item.status_class }}">
+                        {{ item.name }}
+                        ({{ item.quantity }}個, {{ item.location.name }},
+                        期限: {{ item.expiration_date }},
+                        残り: {{ item.days_left }}日)
+                    </li>
                     {% endfor %}
                 </ul>
             {% else %}
